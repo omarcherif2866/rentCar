@@ -1,0 +1,229 @@
+<!-- NAVBAR -->
+<header class="navbar" [class.scrolled]="isScrolled">
+  <div class="logo">
+    <span class="logo-icon">◈</span>
+    <span class="logo-text">Car<strong>Rent</strong></span>
+  </div>
+  <nav class="nav-links">
+    <a href="#">Accueil</a>
+    <a href="#">Voitures</a>
+    <a href="#">Offres</a>
+    <a href="#">À propos</a>
+    <a href="#">Contact</a>
+  </nav>
+  <div class="nav-actions">
+    <button class="btn-login" routerLink="/signin">Connexion</button>
+    <button class="btn-cta">Réserver</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-content">
+    <div class="hero-badge">⚡ Location premium en Tunisie</div>
+    <h1>Conduisez<br><span class="accent">l'excellence.</span></h1>
+    <p class="hero-sub">Choisissez parmi notre flotte de véhicules haut de gamme. Réservation instantanée, tarifs transparents.</p>
+
+
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">500+</span>
+      <span class="stat-label">Véhicules</span>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+      <span class="stat-num">15K+</span>
+      <span class="stat-label">Clients satisfaits</span>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+      <span class="stat-num">12</span>
+      <span class="stat-label">Villes couvertes</span>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+      <span class="stat-num">4.9★</span>
+      <span class="stat-label">Note moyenne</span>
+    </div>
+  </div>
+</section>
+
+<!-- BANNER: OFFRE SPÉCIALE -->
+<div class="promo-banner">
+  <div class="promo-inner">
+    <span class="promo-tag">OFFRE LIMITÉE</span>
+    <p>🎉 <strong>-20% sur toutes les réservations</strong> de plus de 3 jours ce mois-ci</p>
+    <button class="promo-btn">Profiter de l'offre →</button>
+  </div>
+</div>
+
+<!-- CATÉGORIES -->
+<section class="categories">
+  <div class="section-header">
+    <span class="section-tag">Notre flotte</span>
+    <h2>Choisissez votre <span class="accent">catégorie</span></h2>
+    <p>De la citadine économique au SUV de luxe, trouvez le véhicule parfait.</p>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-card" *ngFor="let cat of categories">
+      <div class="cat-icon">{{cat.icon}}</div>
+      <h3>{{cat.name}}</h3>
+      <p>{{cat.desc}}</p>
+      <span class="cat-price">À partir de {{cat.from}} Dt/j</span>
+    </div>
+  </div>
+</section>
+
+<!-- VOITURES VEDETTES -->
+<section class="cars">
+  <div class="section-header">
+    <span class="section-tag">Sélection</span>
+    <h2>Véhicules <span class="accent">vedettes</span></h2>
+  </div>
+<div class="car-list">
+  <div class="car-card"
+       *ngFor="let car of cars; let i = index"
+       [ngClass]="'car-card--' + (i % 4 + 1)">
+
+    <div class="car-card__name">{{ car.name | uppercase }}</div>
+    <img class="car-card__img" [src]="car.image" [alt]="car.name">
+
+    <div class="car-card__footer">
+      <div class="car-card__specs">
+        <span class="car-card__spec">🛞 {{ car.transmission }}</span>
+        <span class="car-card__spec">⛽ {{ car.fuel }}</span>
+        <span class="car-card__spec">🚪 {{ car.puissance }} ch</span>
+      </div>
+      <div class="car-card__price-block">
+        <span class="car-card__price">{{ car.price }} Dt</span>
+        <span class="car-card__period">/ jour</span>
+      </div>
+    </div>
+
+    <div class="car-card__actions">
+      <span class="car-card__badge">Disponible</span>
+      <button class="car-card__reserve">Réserver</button>
+    </div>
+
+  </div>
+</div>
+  <div class="cars-cta">
+    <button class="btn-outline" routerLink="/cars">Voir tous les véhicules →</button>
+  </div>
+</section>
+
+<!-- BANNER: COMMENT ÇA MARCHE -->
+<section class="how-it-works">
+  <div class="hiw-bg"></div>
+  <div class="section-header light">
+    <span class="section-tag">Simple & rapide</span>
+    <h2>Réservez en <span class="accent-light">3 étapes</span></h2>
+  </div>
+  <div class="steps">
+    <div class="step" *ngFor="let step of steps; let i = index">
+      <div class="step-num">{{i + 1}}</div>
+      <div class="step-icon">{{step.icon}}</div>
+      <h3>{{step.title}}</h3>
+      <p>{{step.desc}}</p>
+      <div class="step-arrow" *ngIf="i < steps.length - 1">→</div>
+    </div>
+  </div>
+</section>
+
+<!-- POURQUOI NOUS -->
+<section class="features">
+  <div class="section-header">
+    <span class="section-tag">Nos engagements</span>
+    <h2>Pourquoi choisir <span class="accent">CarRent ?</span></h2>
+  </div>
+  <div class="feature-grid">
+    <div class="feature-card" *ngFor="let feat of features">
+      <div class="feat-icon">{{feat.icon}}</div>
+      <h3>{{feat.title}}</h3>
+      <p>{{feat.desc}}</p>
+    </div>
+  </div>
+</section>
+
+<!-- TÉMOIGNAGES -->
+<section class="testimonials">
+  <div class="testi-bg"></div>
+  <div class="section-header light">
+    <span class="section-tag">Avis clients</span>
+    <h2>Ce qu'ils disent <span class="accent-light">de nous</span></h2>
+  </div>
+  <div class="testi-list">
+    <div class="testi-card" *ngFor="let t of testimonials">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"{{t.text}}"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">{{t.initials}}</div>
+        <div>
+          <strong>{{t.name}}</strong>
+          <span>{{t.city}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BANNER: APPLICATION MOBILE -->
+<section class="app-banner">
+  <div class="app-banner-content">
+    <div class="app-text">
+      <span class="section-tag">Nouveau</span>
+      <h2>Réservez depuis votre <span class="accent">smartphone</span></h2>
+      <p>Téléchargez l'application CarRent et gérez vos réservations où que vous soyez.</p>
+      <div class="app-btns">
+        <button class="app-store-btn">🍎 App Store</button>
+        <button class="app-store-btn">🤖 Google Play</button>
+      </div>
+    </div>
+    <div class="app-phone">📱</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">Car<strong>Rent</strong></span>
+      </div>
+      <p>Le service de location de voitures premium en Tunisie. Qualité, rapidité, confiance.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <a href="#">Accueil</a>
+      <a href="#">Nos voitures</a>
+      <a href="#">Offres spéciales</a>
+      <a href="#">À propos</a>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <a href="#">FAQ</a>
+      <a href="#">Contact</a>
+      <a href="#">Conditions générales</a>
+      <a href="#">Politique de confidentialité</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <p>📞 +216 70 000 000</p>
+      <p>✉️ contact@carrent.tn</p>
+      <p>📍 Tunis, Tunisie</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 CarRent — Tous droits réservés</p>
+    <div class="socials">
+      <a href="#">FB</a>
+      <a href="#">IG</a>
+      <a href="#">LK</a>
+    </div>
+  </div>
+</footer>

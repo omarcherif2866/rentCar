@@ -1,0 +1,73 @@
+<div class="auth-page">
+  <div class="auth-card">
+
+    <!-- Logo -->
+    <div class="auth-logo">
+      <span class="logo-icon">🚗</span>
+      <span class="logo-text">Car<strong>Rent</strong></span>
+    </div>
+
+    <h1>Bon retour !</h1>
+    <p class="auth-sub">Connectez-vous à votre compte</p>
+
+    <!-- Erreur -->
+    <div class="auth-error" *ngIf="errorMsg">
+      <span>⚠️ {{ errorMsg }}</span>
+    </div>
+
+    <div class="auth-form">
+
+      <div class="field">
+        <label>Nom d'utilisateur</label>
+        <div class="input-wrap">
+          <span class="input-icon">👤</span>
+          <input
+            type="text"
+            placeholder="votre_username"
+            [(ngModel)]="username"
+            autocomplete="username"
+          />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Mot de passe</label>
+        <div class="input-wrap">
+          <span class="input-icon">🔒</span>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="••••••••"
+            [(ngModel)]="password"
+            autocomplete="current-password"
+          />
+          <button class="toggle-pass" type="button" (click)="showPassword = !showPassword">
+            {{ showPassword ? '🙈' : '👁️' }}
+          </button>
+        </div>
+      </div>
+
+      <button
+        class="btn-submit"
+        (click)="onSubmit()"
+        [disabled]="loading"
+      >
+        <span  *ngIf="!loading">Se connecter →</span>
+        <span *ngIf="loading" class="spinner"></span>
+      </button>
+
+    </div>
+
+    <p class="auth-switch">
+      Pas encore de compte ?
+      <a routerLink="/signup">Créer un compte</a>
+    </p>
+
+  </div>
+
+  <!-- Décoration -->
+  <div class="auth-deco">
+    <div class="deco-circle deco-circle--1"></div>
+    <div class="deco-circle deco-circle--2"></div>
+    <div class="deco-car">🏎️</div>
+  </div>
+</div>

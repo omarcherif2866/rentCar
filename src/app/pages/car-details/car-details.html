@@ -1,0 +1,329 @@
+<!-- LOADING -->
+<div class="loading-screen" *ngIf="loading">
+  <div class="spinner"></div>
+  <p>Chargement du véhicule...</p>
+</div>
+
+<!-- NOT FOUND -->
+<div class="not-found" *ngIf="notFound && !loading">
+  <span class="not-found__icon">🚗</span>
+  <h2>Véhicule introuvable</h2>
+  <p>Ce véhicule n'existe pas ou a été retiré de notre catalogue.</p>
+  <button class="btn-back" (click)="goBack()">← Retour aux voitures</button>
+</div>
+
+<!-- CONTENU PRINCIPAL -->
+<div class="detail-page" *ngIf="car && !loading">
+
+  <!-- Fil d'Ariane -->
+  <div class="breadcrumb">
+    <div class="breadcrumb__inner">
+      <span (click)="goBack()" class="breadcrumb__link">Voitures</span>
+      <span class="breadcrumb__sep">›</span>
+      <span class="breadcrumb__link">{{ car.name }}</span>
+    </div>
+  </div>
+
+  <!-- SECTION PRINCIPALE -->
+  <section class="detail-main">
+    <div class="detail-main__inner">
+
+      <!-- Colonne gauche: image + specs -->
+      <div class="detail-left">
+
+        <!-- Image hero -->
+        <div class="car-showcase">
+          <div class="car-showcase__glow" [style.background]="'radial-gradient(ellipse, ' + car.color + '22 0%, transparent 70%)'"></div>
+          <div class="car-showcase__badge" [class.badge--unavailable]="!car.available">
+            {{ car.available ? '✓ Disponible maintenant' : '✗ Indisponible' }}
+          </div>
+          <img [src]="car.image" [alt]="car.name" class="car-showcase__img" />
+        </div>
+
+        <!-- Specs détaillées -->
+        <div class="specs-panel">
+          <h3 class="specs-panel__title">Caractéristiques</h3>
+          <div class="specs-grid">
+            <div class="spec-item">
+              <span class="spec-item__icon">🛞</span>
+              <span class="spec-item__label">Boîte</span>
+              <span class="spec-item__value">{{ car.transmission }}</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-item__icon">⛽</span>
+              <span class="spec-item__label">Carburant</span>
+              <span class="spec-item__value">{{ car.fuel }}</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-item__icon">⚡</span>
+              <span class="spec-item__label">Puissance</span>
+              <span class="spec-item__value">{{ car.puissance }} ch</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-item__icon">💺</span>
+              <span class="spec-item__label">Places</span>
+              <span class="spec-item__value">{{ car.places }}</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-item__icon">🚪</span>
+              <span class="spec-item__label">Portes</span>
+              <span class="spec-item__value">{{ car.portes }}</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-item__icon">❄️</span>
+              <span class="spec-item__label">Clim</span>
+              <span class="spec-item__value">{{ car.climatisation ? 'Oui' : 'Non' }}</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-item__icon">🗺️</span>
+              <span class="spec-item__label">GPS</span>
+              <span class="spec-item__value">{{ car.gps ? 'Inclus' : 'Non' }}</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-item__icon">📅</span>
+              <span class="spec-item__label">Année</span>
+              <span class="spec-item__value">{{ car.year }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Équipements -->
+        <div class="features-panel">
+          <h3 class="features-panel__title">Équipements inclus</h3>
+          <div class="features-list">
+            <span class="feature-tag" *ngFor="let f of car.features">✓ {{ f }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Colonne droite: infos + réservation -->
+      <div class="detail-right">
+
+        <!-- En-tête voiture -->
+        <div class="car-header">
+          <span class="car-header__category">{{ car.category }}</span>
+          <h1 class="car-header__name">{{ car.name }}</h1>
+          <p class="car-header__brand">{{ car.brand }} · {{ car.model }} · année {{ car.year }}</p>
+          <div class="car-header__rating">
+            <span class="stars">★★★★★</span>
+            <span class="rating-num">{{ car.rating }}</span>
+            <span class="rating-count">({{ car.reviews }} avis)</span>
+          </div>
+          <p class="car-header__desc">{{ car.description }}</p>
+        </div>
+
+        <!-- Bloc réservation -->
+        <div class="booking-card">
+          <div class="booking-card__header">
+            <div class="booking-price">
+              <span class="booking-price__amount">{{ car.price }} Dt</span>
+              <span class="booking-price__period">/ jour</span>
+            </div>
+            <span class="booking-card__tag" *ngIf="car.available">Réservation instantanée</span>
+          </div>
+
+          <!-- Bouton réserver (visible seulement si available) -->
+          <button
+            class="btn-reserve"
+            *ngIf="car.available"
+            (click)="openReservationDialog()"
+          >
+            Réserver maintenant
+          </button>
+
+          <!-- Message indisponible -->
+          <div class="unavailable-msg" *ngIf="!car.available">
+            <span class="unavailable-msg__icon">✗</span>
+            <p>Ce véhicule n'est pas disponible à la réservation pour le moment.</p>
+          </div>
+
+          <p class="booking-note">🛡️ Assurance tous risques incluse · Annulation gratuite 24h avant</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- VOITURES SIMILAIRES -->
+  <section class="related" *ngIf="relatedCars.length > 0">
+    <div class="section-header">
+      <span class="section-tag">Vous aimerez aussi</span>
+      <h2>Véhicules <span class="accent">similaires</span></h2>
+    </div>
+    <div class="related-grid">
+      <div class="related-card" *ngFor="let r of relatedCars" (click)="goToRelated(r)">
+        <div class="related-card__img-wrap">
+          <img [src]="r.image" [alt]="r.name" />
+        </div>
+        <div class="related-card__info">
+          <h4>{{ r.name }}</h4>
+          <span class="related-card__price">{{ r.price }} Dt / jour</span>
+        </div>
+        <span class="related-card__rating">★ {{ r.rating }}</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ===================== DIALOG RÉSERVATION ===================== -->
+<div class="dialog-overlay" *ngIf="showDialog" (click)="onOverlayClick($event)">
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+
+    <!-- Header -->
+    <div class="dialog__header">
+      <div>
+        <h2 class="dialog__title" id="dialog-title">Réserver ce véhicule</h2>
+        <p class="dialog__subtitle">{{ car?.name }} · {{ car?.price }} Dt / jour</p>
+      </div>
+      <button class="dialog__close" (click)="closeDialog()" aria-label="Fermer">✕</button>
+    </div>
+
+    <hr class="dialog__divider">
+
+    <!-- Informations personnelles -->
+    <div class="dialog__section">
+      <p class="dialog__section-label">Informations personnelles</p>
+
+      <div class="dialog__form-row">
+        <div class="dialog__field">
+          <label for="res-prenom">Prénom</label>
+          <input
+            id="res-prenom"
+            type="text"
+            placeholder="Votre prénom"
+            [(ngModel)]="reservation.prenom"
+          />
+        </div>
+        <div class="dialog__field">
+          <label for="res-nom">Nom</label>
+          <input
+            id="res-nom"
+            type="text"
+            placeholder="Votre nom"
+            [(ngModel)]="reservation.nom"
+          />
+        </div>
+      </div>
+
+      <div class="dialog__form-row">
+        <div class="dialog__field">
+          <label for="res-email">Email</label>
+          <input
+            id="res-email"
+            type="email"
+            placeholder="exemple@mail.com"
+            [(ngModel)]="reservation.email"
+          />
+        </div>
+        <div class="dialog__field">
+          <label for="res-tel">Téléphone</label>
+          <input
+            id="res-tel"
+            type="tel"
+            placeholder="+216 XX XXX XXX"
+            [(ngModel)]="reservation.telephone"
+          />
+        </div>
+      </div>
+
+      <div class="dialog__field">
+        <label for="res-adresse">Adresse</label>
+        <input
+          id="res-adresse"
+          type="text"
+          placeholder="Rue, Ville, Code postal"
+          [(ngModel)]="reservation.adresse"
+        />
+      </div>
+    </div>
+
+    <!-- Période de location -->
+    <div class="dialog__section">
+      <p class="dialog__section-label">Période de location</p>
+
+      <div class="dialog__form-row">
+        <div class="dialog__field">
+          <label for="res-debut">Date de début</label>
+          <input
+            id="res-debut"
+            type="date"
+            [min]="today"
+            [(ngModel)]="reservation.dateDebut"
+            (ngModelChange)="onDateChange()"
+          />
+        </div>
+        <div class="dialog__field">
+          <label for="res-fin">Date de fin</label>
+          <input
+            id="res-fin"
+            type="date"
+            [min]="reservation.dateDebut || today"
+            [(ngModel)]="reservation.dateFin"
+            (ngModelChange)="onDateChange()"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Simulation prix -->
+    <div class="dialog__price-summary" *ngIf="totalDays > 0">
+      <div class="dialog__price-row">
+        <span>{{ car?.price }} Dt × {{ totalDays }} jour{{ totalDays > 1 ? 's' : '' }}</span>
+        <span>{{ totalPrice }} Dt</span>
+      </div>
+      <div class="dialog__price-row">
+        <span>Assurance tous risques</span>
+        <span class="dialog__price-free">Offerte</span>
+      </div>
+      <div class="dialog__price-row dialog__price-row--total">
+        <span>Total à payer</span>
+        <span>{{ totalPrice }} Dt</span>
+      </div>
+    </div>
+
+    <div class="dialog__price-placeholder" *ngIf="totalDays === 0">
+      <span>Sélectionnez vos dates pour voir le total</span>
+    </div>
+
+    <!-- Actions -->
+<!-- Succès -->
+<div class="dialog__success" *ngIf="sendSuccess">
+  <div class="dialog__success-icon">✅</div>
+  <h3>Réservation confirmée !</h3>
+  <p>
+    Le bon de réservation a été téléchargé automatiquement.<br>
+    Un email de confirmation a été envoyé à
+    <strong>{{ reservation.email }}</strong>.
+  </p>
+</div>
+
+<!-- Erreur -->
+<div class="dialog__error" *ngIf="sendError">
+  <span class="dialog__error-icon">⚠️</span>
+  <p>{{ errorMessage }}</p>
+</div>
+
+<!-- Actions -->
+<div class="dialog__actions" *ngIf="!sendSuccess">
+  <button class="btn-cancel" (click)="closeDialog()" [disabled]="sending">
+    Annuler
+  </button>
+  <button
+    class="btn-confirm"
+    [disabled]="!isFormValid() || sending"
+    (click)="confirmReservation()"
+  >
+    <span class="btn-spinner" *ngIf="sending"></span>
+    <span *ngIf="!sending">Confirmer la réservation</span>
+    <span *ngIf="sending">Envoi en cours...</span>
+  </button>
+</div>
+
+<!-- Note (masquée après succès) -->
+<p class="dialog__note" *ngIf="!sendSuccess">
+  🛡️ Assurance incluse · Annulation gratuite 24h avant
+</p>
+
+  </div>
+</div>

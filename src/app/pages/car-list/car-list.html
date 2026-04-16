@@ -1,0 +1,132 @@
+<!-- HEADER DE PAGE -->
+<div class="page-header">
+  <div class="page-header__inner">
+    <span class="page-header__tag">Notre flotte</span>
+    <h1>Tous nos <span class="accent">véhicules</span></h1>
+    <p>{{ filteredCars.length }} véhicule{{ filteredCars.length > 1 ? 's' : '' }} disponible{{ filteredCars.length > 1 ? 's' : '' }}</p>
+  </div>
+</div>
+
+<!-- BARRE DE RECHERCHE + FILTRES -->
+<section class="filters-bar">
+  <div class="filters-bar__inner">
+    <div class="search-input-wrap">
+      <span class="search-icon">🔍</span>
+      <input
+        type="text"
+        placeholder="Rechercher une voiture..."
+        [value]="searchQuery"
+        (input)="onSearch($event)"
+        class="search-input"
+      />
+    </div>
+    <div class="select-wrap">
+      <label>Carburant</label>
+      <select (change)="onFuelChange($event)">
+        <option *ngFor="let f of fuels" [value]="f">{{ f }}</option>
+      </select>
+    </div>
+    <div class="select-wrap">
+      <label>Boîte</label>
+      <select (change)="onTransmissionChange($event)">
+        <option *ngFor="let t of transmissions" [value]="t">{{ t }}</option>
+      </select>
+    </div>
+    <div class="select-wrap">
+      <label>Trier par</label>
+      <select (change)="onSortChange($event)">
+        <option value="price-asc">Prix croissant</option>
+        <option value="price-desc">Prix décroissant</option>
+        <option value="rating">Mieux notés</option>
+      </select>
+    </div>
+    <button class="btn-reset" (click)="resetFilters()">↺ Réinitialiser</button>
+  </div>
+  <div class="category-pills">
+    <button
+      *ngFor="let cat of categories"
+      class="pill"
+      [class.pill--active]="selectedCategory === cat"
+      (click)="onCategoryChange(cat)"
+    >{{ cat }}</button>
+  </div>
+
+
+  
+</section>
+
+
+
+
+<!-- GRILLE DES VOITURES -->
+<section class="cars-grid-section">
+
+<!-- Remplace le div.search-box -->
+<div class="date-filter-bar">
+  <div class="date-divider"></div>
+  <div class="date-field">
+    <label>📅 Départ</label>
+    <input type="date" [(ngModel)]="dateDebut">
+  </div>
+  <div class="date-divider"></div>
+  <div class="date-field">
+    <label>📅 Retour</label>
+    <input type="date" [(ngModel)]="dateFin">
+  </div>
+  <button class="search-btn" (click)="onSearchAvailable()">
+    Rechercher les disponibilités
+  </button>
+  <button class="btn-reset" (click)="resetFilters()">↺ Réinitialiser</button>
+
+</div>
+
+  <div class="cars-grid" *ngIf="filteredCars.length > 0; else noResult">
+    <div
+      class="car-card"
+      *ngFor="let car of filteredCars"
+      (click)="goToDetail(car)"
+      tabindex="0"
+    >
+      <!-- Image (occupe tout le haut) -->
+      <img [src]="car.image" [alt]="car.name" class="car-card__img" />
+
+      <!-- Badge disponibilité -->
+      <div class="car-card__badge" [class.car-card__badge--unavailable]="!car.available">
+        {{ car.available ? '✓ Disponible' : '✗ Indisponible' }}
+      </div>
+
+      <!-- Section infos (slide au hover) -->
+      <section>
+        <div class="car-card__meta">
+          <span class="car-card__category">{{ car.category }}</span>
+          <span class="car-card__rating">★ {{ car.rating }}</span>
+        </div>
+        <span class="accent">{{ car.name }}</span>
+        <p>{{ car.brand }} · {{ car.year }} · {{ car.transmission }} · {{ car.fuel }}</p>
+        <div class="car-card__bottom">
+          <div class="car-card__price">
+            <span class="price-amount">{{ car.price }} Dt</span>
+            <span class="price-period">/ jour</span>
+          </div>
+          <button
+            class="btn-reserve"
+            [class.btn-reserve--disabled]="!car.available"
+            [disabled]="!car.available"
+            (click)="$event.stopPropagation(); goToDetail(car)"
+          >
+            {{ car.available ? 'Réserver' : 'Indispo.' }}
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <ng-template #noResult>
+    <div class="no-result">
+      <span class="no-result__icon">🚗</span>
+      <h3>Aucun véhicule trouvé</h3>
+      <p>Essayez de modifier vos critères de recherche.</p>
+      <button class="btn-reset" (click)="resetFilters()">Réinitialiser les filtres</button>
+    </div>
+  </ng-template>
+</section>

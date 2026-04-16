@@ -1,0 +1,504 @@
+/* carsList.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* === PAGE HEADER === */
+.page-header {
+  background: linear-gradient(160deg, #0d0d15 0%, #13131e 60%, #0a0a0f 100%);
+  padding: 100px 40px 60px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 300px;
+  background: radial-gradient(ellipse, rgba(232,200,74,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.page-header__tag {
+  display: inline-block;
+  background: rgba(232,200,74,0.12);
+  color: var(--accent);
+  border: 1px solid rgba(232,200,74,0.25);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.page-header h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  color: var(--text);
+  font-weight: 700;
+  margin: 0 0 10px;
+  letter-spacing: -0.02em;
+}
+
+.page-header p { color: var(--text-muted); font-size: 1rem; }
+.accent { color: var(--accent); }
+
+/* === FILTERS BAR === */
+.filters-bar {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 40px;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  backdrop-filter: blur(12px);
+}
+
+.filters-bar__inner {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  max-width: 1400px;
+  margin: 0 auto 16px;
+}
+
+.search-input-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  padding: 10px 14px 10px 38px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.search-input:focus { border-color: rgba(232,200,74,0.4); }
+.search-input::placeholder { color: var(--white); }
+
+.select-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 140px;
+}
+
+.select-wrap label {
+  font-size: 0.72rem;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Dans carsList.css */
+.select-wrap select {
+  background: #1e1e2a;        /* ← forcer le fond sombre */
+  color: #f0f0f5;             /* ← forcer le texte clair */
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius);
+  padding: 10px 32px 10px 14px;
+  font-size: 0.88rem;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23e8c84a' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 10px;
+}
+
+/* Les <option> héritent maintenant du fond forcé */
+.select-wrap select option {
+  background: #1e1e2a;
+  color: #f0f0f5;
+}
+
+.select-wrap select:focus { border-color: rgba(232,200,74,0.4); }
+
+.btn-reset {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+  align-self: flex-end;
+}
+.btn-reset:hover { border-color: var(--accent); color: var(--accent); }
+
+.category-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.pill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.pill:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+.pill--active {
+  background: rgba(232,200,74,0.12);
+  border-color: rgba(232,200,74,0.4);
+  color: var(--accent);
+}
+
+/* === CARS GRID === */
+.cars-grid-section {
+  background: var(--bg);
+  padding: 50px 40px 80px;
+  min-height: 60vh;
+}
+
+.cars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* === CAR CARD (style hover reveal) === */
+/* ============================================
+   CAR CARD — Fix : nom toujours visible
+   détails supplémentaires révélés au hover
+   ============================================ */
+
+.car-card {
+  background: var(--surface);
+  border-radius: 2rem;
+  padding: 0.75rem;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  border: 1px solid var(--border);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+
+.car-card:hover,
+.car-card:focus-within {
+  border-color: rgba(232,200,74,0.3);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(232,200,74,0.08);
+  outline: none;
+}
+
+/* ── IMAGE ── */
+.car-card__img {
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 1.5rem;
+  display: block;
+  transition: height 0.3s ease;
+}
+
+.car-card:hover .car-card__img,
+.car-card:focus-within .car-card__img {
+  height: 150px;
+}
+
+/* Supprime le pseudo-element blur de l'original */
+.car-card::before { display: none; }
+
+/* ── BADGE ── */
+.car-card__badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(46,204,113,0.15);
+  border: 1px solid rgba(46,204,113,0.35);
+  color: var(--success);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  z-index: 2;
+}
+
+.car-card__badge--unavailable {
+  background: rgba(231,76,60,0.15);
+  border-color: rgba(231,76,60,0.35);
+  color: var(--danger);
+}
+
+/* ── SECTION INFOS ── */
+.car-card > section {
+  padding: 12px 8px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  /* Reset des styles originaux qui cachaient tout */
+  height: auto;
+  translate: none;
+  opacity: 1;
+}
+
+/* Catégorie + rating — révélés au hover */
+.car-card__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  translate: none;
+  transition: max-height 0.3s ease, opacity 0.25s ease;
+}
+
+.car-card:hover .car-card__meta,
+.car-card:focus-within .car-card__meta {
+  max-height: 30px;
+  opacity: 1;
+}
+
+.car-card__category {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.car-card__rating {
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+/* Nom — TOUJOURS visible */
+.car-card > section h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  opacity: 1 !important;
+  translate: none !important;
+  transition: none !important;
+}
+
+/* Specs — révélés au hover */
+.car-card > section p {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin: 0;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  translate: none;
+  transition: max-height 0.3s ease 0.05s, opacity 0.25s ease 0.05s;
+}
+
+.car-card:hover > section p,
+.car-card:focus-within > section p {
+  max-height: 30px;
+  opacity: 1;
+}
+
+/* ── FOOTER prix + bouton — TOUJOURS visible ── */
+.car-card__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
+  opacity: 1 !important;
+  translate: none !important;
+  transition: border-color 0.2s !important;
+}
+
+.car-card:hover .car-card__bottom {
+  border-color: rgba(232,200,74,0.15);
+}
+
+.car-card__price {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.price-amount {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.price-period {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.btn-reserve {
+  background: var(--accent);
+  color: #0a0a0f;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.btn-reserve:hover:not(:disabled) {
+  background: var(--accent2);
+  transform: scale(1.04);
+}
+
+.btn-reserve:disabled,
+.btn-reserve--disabled {
+  background: var(--surface2);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+/* === NO RESULT === */
+.no-result {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-muted);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.no-result__icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 16px;
+  opacity: 0.4;
+}
+
+.no-result h3 { color: var(--text); font-size: 1.3rem; margin-bottom: 8px; }
+.no-result p { margin-bottom: 20px; font-size: 0.9rem; }
+
+
+/* Remplace le .search-box existant */
+.date-filter-bar {
+  background: rgba(232,200,74,0.04);
+  border: 1px solid rgba(232,200,74,0.15);
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  max-width: 1400px;
+  margin: 0 auto 16px;
+}
+
+.date-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 160px;
+}
+
+.date-field label {
+  font-size: 0.72rem;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.date-field input[type="date"] {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+  color-scheme: dark;        /* ← rend le calendrier natif sombre */
+    color: #f0f0f5;             /* ← forcer le texte clair */
+
+}
+
+
+
+.date-field input[type="date"]:focus {
+  border-color: rgba(232,200,74,0.5);
+  box-shadow: 0 0 0 3px rgba(232,200,74,0.08);
+}
+
+.date-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255,255,255,0.08);
+  align-self: flex-end;
+  margin-bottom: 2px;
+}
+
+.search-btn {
+  background: var(--accent);
+  color: #0a0a0f;
+  border: none;
+  padding: 11px 24px;
+  border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  align-self: flex-end;
+}
+.search-btn:hover { background: var(--accent2); transform: translateY(-1px); }
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .page-header { padding: 80px 20px 40px; }
+  .filters-bar { padding: 16px 20px; }
+  .filters-bar__inner { gap: 10px; }
+  .cars-grid-section { padding: 30px 20px 60px; }
+  .cars-grid { grid-template-columns: 1fr; }
+  .car-card { height: 380px; }
+  .search-box { flex-direction: column; padding: 16px; } 
+  .search-divider { width: 100%; height: 1px; margin: 6px 0; } 
+}

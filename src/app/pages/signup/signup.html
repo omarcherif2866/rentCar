@@ -1,0 +1,112 @@
+<div class="auth-page">
+  <div class="auth-card">
+
+    <div class="auth-logo">
+      <span class="logo-icon">🚗</span>
+      <span class="logo-text">Car<strong>Rent</strong></span>
+    </div>
+
+    <h1>Créer un compte</h1>
+    <p class="auth-sub">Rejoignez CarRent dès aujourd'hui</p>
+
+    <div class="auth-error" *ngIf="errorMsg">
+      <span>⚠️ {{ errorMsg }}</span>
+    </div>
+
+    <div class="auth-form">
+
+      <div class="field">
+        <label>Nom d'utilisateur</label>
+        <div class="input-wrap">
+          <span class="input-icon">👤</span>
+          <input
+            type="text"
+            placeholder="votre_username"
+            [(ngModel)]="username"
+            autocomplete="username"
+          />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <div class="input-wrap">
+          <span class="input-icon">✉️</span>
+          <input
+            type="email"
+            placeholder="vous@email.com"
+            [(ngModel)]="email"
+            autocomplete="email"
+          />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Mot de passe</label>
+        <div class="input-wrap">
+          <span class="input-icon">🔒</span>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Minimum 6 caractères"
+            [(ngModel)]="password"
+            autocomplete="new-password"
+          />
+          <button class="toggle-pass" type="button" (click)="showPassword = !showPassword">
+            {{ showPassword ? '🙈' : '👁️' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Confirmer le mot de passe</label>
+        <div class="input-wrap">
+          <span class="input-icon">🔒</span>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Répétez le mot de passe"
+            [(ngModel)]="confirmPassword"
+            autocomplete="new-password"
+          />
+        </div>
+      </div>
+
+      <!-- Indicateur force mot de passe -->
+      <div class="password-strength" *ngIf="password.length > 0">
+        <div class="strength-bar">
+          <div
+            class="strength-fill"
+            [style.width.%]="password.length >= 10 ? 100 : password.length >= 6 ? 60 : 30"
+            [class.weak]="password.length < 6"
+            [class.medium]="password.length >= 6 && password.length < 10"
+            [class.strong]="password.length >= 10"
+          ></div>
+        </div>
+        <span class="strength-label">
+          {{ password.length < 6 ? 'Faible' : password.length < 10 ? 'Moyen' : 'Fort' }}
+        </span>
+      </div>
+
+      <button
+        class="btn-submit"
+        (click)="onSubmit()"
+        [disabled]="loading"
+      >
+        <span *ngIf="!loading">Créer mon compte →</span>
+        <span *ngIf="loading" class="spinner"></span>
+      </button>
+
+    </div>
+
+    <p class="auth-switch">
+      Déjà un compte ?
+      <a routerLink="/signin">Se connecter</a>
+    </p>
+
+  </div>
+
+  <div class="auth-deco">
+    <div class="deco-circle deco-circle--1"></div>
+    <div class="deco-circle deco-circle--2"></div>
+    <div class="deco-car">🏎️</div>
+  </div>
+</div>
